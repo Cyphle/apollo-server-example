@@ -7,6 +7,7 @@ import { readFileSync } from 'fs';
 import { Book, QueryBookByTitleArgs, Resolvers } from './generated/graphql';
 import { MoviesAPI } from './remotes/movies-api';
 import { ApolloServer } from '@apollo/server';
+import { GraphQLResolveInfo } from 'graphql';
 
 const typeDefs = readFileSync('./src/schemas/schema.graphql', { encoding: 'utf-8' });
 
@@ -46,7 +47,7 @@ export const resolvers: Resolvers = {
     books: (): Book[] => {
       return books;
     },
-    bookByTitle: (parent, args: Partial<QueryBookByTitleArgs>, contextValue, info): Book => {
+    bookByTitle: (parent, args: Partial<QueryBookByTitleArgs>, contextValue, info: GraphQLResolveInfo): Book => {
       return books.find((book) => book.title === args.title);
     }
   },
