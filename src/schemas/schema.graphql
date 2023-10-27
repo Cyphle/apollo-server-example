@@ -1,5 +1,6 @@
 type Query {
   books: [Book]
+  bookByTitle(title: String): Book
 }
 
 type Book {

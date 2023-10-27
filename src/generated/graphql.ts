@@ -42,7 +42,13 @@ export type MutationAddBookArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  bookByTitle?: Maybe<Book>;
   books?: Maybe<Array<Maybe<Book>>>;
+};
+
+
+export type QueryBookByTitleArgs = {
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -153,6 +159,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  bookByTitle?: Resolver<Maybe<ResolversTypes['Book']>, ParentType, ContextType, Partial<QueryBookByTitleArgs>>;
   books?: Resolver<Maybe<Array<Maybe<ResolversTypes['Book']>>>, ParentType, ContextType>;
 };
 

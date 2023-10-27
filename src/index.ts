@@ -5,7 +5,7 @@ import cors from 'cors';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { expressMiddleware } from '@apollo/server/express4';
 import { readFileSync } from 'fs';
-import { Book, Resolvers } from './generated/graphql';
+import { Book, QueryBookByTitleArgs, Resolvers } from './generated/graphql';
 
 const typeDefs = readFileSync('./src/schemas/schema.graphql', { encoding: 'utf-8' });
 
@@ -45,6 +45,9 @@ export const resolvers: Resolvers = {
     books: (): Book[] => {
       return books;
     },
+    bookByTitle: (parent, args: Partial<QueryBookByTitleArgs>, contextValue, info): Book => {
+      return books.find((book) => book.title === args.title);
+    }
   },
 }
 
