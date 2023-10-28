@@ -47,7 +47,7 @@ export const resolvers: Resolvers = {
     books: (): Book[] => {
       return books;
     },
-    bookByTitle: (parent, args: Partial<QueryBookByTitleArgs>, contextValue, info: GraphQLResolveInfo): Book => {
+    bookByTitle: (parent: Book, args: Partial<QueryBookByTitleArgs>, contextValue, info: GraphQLResolveInfo): Book => {
       return books.find((book) => book.title === args.title);
     }
   },
