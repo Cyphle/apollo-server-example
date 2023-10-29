@@ -1,5 +1,5 @@
 import { RESTDataSource } from '@apollo/datasource-rest';
-import { Movie } from './movie.types';
+import { Movie } from './movie.types.js';
 
 export class MoviesAPI extends RESTDataSource {
   override baseURL = 'https://movies-api.example.com/';
