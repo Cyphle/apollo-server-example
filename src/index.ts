@@ -10,6 +10,7 @@ import { Book, QueryBookByTitleArgs, Resolvers } from './generated/graphql.js';
 import { MoviesAPI } from './remotes/movies-api.js';
 
 const typeDefs = readFileSync('./src/schemas/schema.graphql', { encoding: 'utf-8' });
+const typeDefsBooks = readFileSync('./src/schemas/book.graphql', { encoding: 'utf-8' });
 
 //
 // const typeDefs = `#graphql
@@ -91,7 +92,7 @@ interface MyContext {
 const app = express();
 const httpServer = http.createServer(app);
 const server = new ApolloServer<MyContext>({
-  typeDefs,
+  typeDefs: [typeDefs, typeDefsBooks],
   resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   status400ForVariableCoercionErrors: true
