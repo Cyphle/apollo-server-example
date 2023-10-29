@@ -4,10 +4,10 @@ import cors from 'cors';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { expressMiddleware } from '@apollo/server/express4';
 import { readFileSync } from 'fs';
-import { Book, QueryBookByTitleArgs, Resolvers } from './generated/graphql';
-import { MoviesAPI } from './remotes/movies-api';
 import { ApolloServer } from '@apollo/server';
 import { GraphQLResolveInfo } from 'graphql';
+import { Book, QueryBookByTitleArgs, Resolvers } from './generated/graphql.js';
+import { MoviesAPI } from './remotes/movies-api.js';
 
 const typeDefs = readFileSync('./src/schemas/schema.graphql', { encoding: 'utf-8' });
 

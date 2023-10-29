@@ -3,18 +3,18 @@ type Book {
   author: String
 }
 
-extend type Query {
-  books: [Book]
-  bookByTitle(title: String): Book
-}
-
-type AddBookMutationResponse {
-  code: String!
-  success: Boolean!
-  message: String!
-  book: Book
-}
-
-extend type Mutation {
-  addBook(title: String, author: String): AddBookMutationResponse
-}
+#extend type Query {
+#  books: [Book]
+#  bookByTitle(title: String): Book
+#}
+#
+#type AddBookMutationResponse {
+#  code: String!
+#  success: Boolean!
+#  message: String!
+#  book: Book
+#}
+#
+#extend type Mutation {
+#  addBook(title: String, author: String): AddBookMutationResponse
+#}

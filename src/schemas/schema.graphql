@@ -1,2 +1,23 @@
-type Query
-type Mutation
+#type Query
+#type Mutation
+
+#type Book {
+#    title: String
+#    author: String
+#}
+
+type Query {
+    books: [Book]
+    bookByTitle(title: String): Book
+}
+
+type AddBookMutationResponse {
+    code: String!
+    success: Boolean!
+    message: String!
+    book: Book
+}
+
+type Mutation {
+    addBook(title: String, author: String): AddBookMutationResponse
+}
