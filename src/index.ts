@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { json } from 'express';
 import http from 'http';
 import cors from 'cors';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
@@ -89,43 +89,79 @@ interface MyContext {
   }
 }
 
+// One way to start Apollo with express
+// const app = express();
+// const httpServer = http.createServer(app);
+// const server = new ApolloServer<MyContext>({
+//   typeDefs: [typeDefs, typeDefsBooks],
+//   resolvers,
+//   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+//   status400ForVariableCoercionErrors: true
+// });
+//
+// async function startServer() {
+//   return await server.start();
+// }
+//
+// (function main() {
+//   startServer()
+//       .then(() => {
+//         app.use(
+//             '/graphql',
+//             cors<cors.CorsRequest>(),
+//             express.json(),
+//             expressMiddleware(server, {
+//               context: async ({ req }) => {
+//                 const { cache } = server;
+//                 const context: MyContext = {
+//                   token: req.headers.token as string,
+//                   dataSources: {
+//                     moviesApi: new MoviesAPI({ cache })
+//                   }
+//                 }
+//                 return context
+//               },
+//             }),
+//         );
+//
+//         httpServer.listen({ port: 4000 }, () => {
+//           console.log(`🚀 Server ready at http://localhost:4000/graphql`)
+//         })
+//       })
+//
+// })();
+
 const app = express();
-const httpServer = http.createServer(app);
+app.use(cors());
+
 const server = new ApolloServer<MyContext>({
   typeDefs: [typeDefs, typeDefsBooks],
-  resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  status400ForVariableCoercionErrors: true
+  resolvers
 });
 
-async function startServer() {
-  return await server.start();
-}
+await server.start();
 
-(function main() {
-  startServer()
-      .then(() => {
-        app.use(
-            '/graphql',
-            cors<cors.CorsRequest>(),
-            express.json(),
-            expressMiddleware(server, {
-              context: async ({ req }) => {
-                const { cache } = server;
-                const context: MyContext = {
-                  token: req.headers.token as string,
-                  dataSources: {
-                    moviesApi: new MoviesAPI({ cache })
-                  }
-                }
-                return context
-              },
-            }),
-        );
+app.use(
+  '/graphql',
+  cors(),
+  json(),
+  expressMiddleware(
+    server,
+    {
+      context: async ({ req }) => {
+        const { cache } = server;
+        const context: MyContext = {
+          token: req.headers.token as string,
+          dataSources: {
+            moviesApi: new MoviesAPI({ cache })
+          }
+        }
+        return context
+      }
+    }
+  )
+)
 
-        httpServer.listen({ port: 4000 }, () => {
-          console.log(`🚀 Server ready at http://localhost:4000/graphql`)
-        })
-      })
-
-})();
+app.listen(4000, () => {
+  console.log('Server is running on port 4000');
+});
