@@ -1,0 +1,1 @@
+export const calculator = (a: number, b: number): number => a + b;

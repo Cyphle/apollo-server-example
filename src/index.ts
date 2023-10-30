@@ -139,29 +139,36 @@ const server = new ApolloServer<MyContext>({
   resolvers
 });
 
-await server.start();
+async function startServer() {
+  return await server.start();
+}
 
-app.use(
-  '/graphql',
-  cors(),
-  json(),
-  expressMiddleware(
-    server,
-    {
-      context: async ({ req }) => {
-        const { cache } = server;
-        const context: MyContext = {
-          token: req.headers.token as string,
-          dataSources: {
-            moviesApi: new MoviesAPI({ cache })
+(function main() {
+  startServer()
+    .then(() => {
+      app.use(
+        '/graphql',
+        cors(),
+        json(),
+        expressMiddleware(
+          server,
+          {
+            context: async ({ req }) => {
+              const { cache } = server;
+              const context: MyContext = {
+                token: req.headers.token as string,
+                dataSources: {
+                  moviesApi: new MoviesAPI({ cache })
+                }
+              }
+              return context
+            }
           }
-        }
-        return context
-      }
-    }
-  )
-)
+        )
+      )
 
-app.listen(4000, () => {
-  console.log('Server is running on port 4000');
-});
+      app.listen(4000, () => {
+        console.log('Server is running on port 4000');
+      });
+    });
+})();
