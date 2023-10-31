@@ -9,6 +9,7 @@
     "dev": "node ./dist/index.js",
     "generate": "graphql-codegen --config src/codegen.ts",
     "bun": "bun ./src/index.ts",
+    "bun-js": "bun ./dist/index.js",
     "test": "jest"
   },
   "keywords": [],
